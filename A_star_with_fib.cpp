@@ -117,7 +117,9 @@ int main() {
 
       if (tentative_gscore < ptr_map[k]->data.g_val) {
         came_from[k] = src;
-        Node_Data replacement = ptr_map[k]->data;
+        Node_Data replacement =
+            ptr_map[k]
+                ->data; // copy constructor is defined so we can just do this
         replacement.g_val = tentative_gscore;
         replacement.f_val = replacement.g_val + replacement.h_val;
         PQ.decrease_key(ptr_map[k], replacement);
