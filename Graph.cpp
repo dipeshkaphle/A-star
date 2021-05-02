@@ -65,10 +65,9 @@ public:
       return false;
     return adjList[srcNode].find(destNode) != adjList[srcNode].end();
   }
-
-  int getWeight(int srcNode, int destNode) {
-    if (isEdgePresent(srcNode, destNode))
-      return adjList[srcNode][destNode];
-    return std::numeric_limits<int>::max();
-  }
+  // int getWeight(int srcNode, int destNode) {
+  //   if (isEdgePresent(srcNode, destNode))
+  //     return adjList[srcNode][destNode];
+  //   return std::numeric_limits<int>::max();
+  // }
 };

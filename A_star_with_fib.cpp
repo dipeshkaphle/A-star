@@ -1,5 +1,5 @@
-#include "./FibonacciHeap.cpp"
-#include "./Graph.cpp"
+#include "FibonacciHeap.cpp"
+#include "Graph.cpp"
 
 struct Data {
   int weight;
