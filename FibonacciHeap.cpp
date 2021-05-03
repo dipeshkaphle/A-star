@@ -108,10 +108,11 @@ public:
   }
 
   void merge(FibHeap<T> &other) {
+    min->merge(other.min);
     if (min == nullptr) {
       min = other.min;
     } else {
-      min->merge(other.min);
+      // min->merge(other.min);
       if (min->data > other.min->data) {
         this->min = other.min;
       }
@@ -150,7 +151,9 @@ public:
   T extract_min() {
     T ret_val = this->get_min();
     node *z = min;
-    std::vector<node *> children = min->child->get_all_nodes();
+    std::vector<node *> children;
+    if (min->child)
+      children = min->child->get_all_nodes();
     for (node *child : children) {
       child->parent = nullptr;
       make_node_point_to_itself(child);
@@ -259,13 +262,14 @@ private:
     // removes next and prev of x, and makes it point to itself
     make_node_point_to_itself(x);
     min->merge(x);
+    // cout << "Merged" << endl;
     x->parent = nullptr;
     x->mark = false;
   }
 
   void cascading_cut(node *y) {
     node *ysParent = y->parent;
-    if (ysParent) {
+    if (ysParent != nullptr) {
       // when one child has been cut
       if (y->mark == false) {
         y->mark = true;
@@ -320,7 +324,7 @@ private:
 
   // this'll be used to reinstate the heap property
   void consolidate() {
-    std::vector<node *> A(ceil(log2(this->n)), nullptr);
+    std::vector<node *> A(ceil(log2(this->n) + 1), nullptr);
     std::vector<node *> rootlist_nodes = min->get_all_nodes();
     node *cur_node;
     node *same_deg_node;
