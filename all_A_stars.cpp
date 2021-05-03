@@ -5,6 +5,7 @@
 #include "utility_classes.cpp"
 
 #include <fstream>
+#include <iomanip>
 
 const Node_Data min_possible(-1, -numeric_limits<float>::infinity(),
                              -numeric_limits<float>::infinity(),
@@ -45,6 +46,7 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
   while (!PQ.isEmpty()) {
     Node_Data current(PQ.get_min());
     if (current.id == dest) {
+      cout << "For V=" << num_of_nodes << "\n";
       cout << "Done\n";
       cout << current.g_val << '\n';
       reconstruct_path(came_from, current.id);
@@ -214,7 +216,7 @@ int main() {
   ofstream bin("Bin.txt");
   ofstream pairing("Pair.txt");
 
-  for (int i = 100; i <= 10000; i *= 2) {
+  for (int i = 500; i <= 7000; i += 500) {
     int size = i;
     Graph<Data> G = generate_random_graph(size);
     // print_graph(G);
@@ -228,9 +230,10 @@ int main() {
     cout << "Fib\n";
     auto time_elapsed3 =
         timeMyFunction(PairHeap::A_star, std::ref(G), dest, size);
-    bin << size << ":" << time_elapsed1 << '\n';
-    fib << size << ":" << time_elapsed2 << '\n';
-    pairing << size << ":" << time_elapsed3 << '\n';
+    bin << fixed << setprecision(30) << size << ":" << time_elapsed1 << '\n';
+    fib << fixed << setprecision(30) << size << ":" << time_elapsed2 << '\n';
+    pairing << fixed << setprecision(30) << size << ":" << time_elapsed3
+            << '\n';
     cout << '\n';
   }
 
