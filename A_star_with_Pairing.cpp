@@ -1,19 +1,6 @@
-#include "BinaryHeap.cpp"
 #include "Graph.cpp"
+#include "Pair.cpp"
 #include "utility_classes.cpp"
-
-void printMap(BinaryHeap<int> &pq) {
-  for (auto x : pq.obj_to_index) {
-    std::cout << x.first << ':' << x.second << ' ';
-  }
-  std::cout << '\n';
-}
-
-template <> struct std::hash<Node_Data> {
-  std::size_t operator()(Node_Data const &key) const {
-    return std::hash<int>()(key.id);
-  }
-};
 
 float get_h_val(int src, int dest,
                 unordered_map<int, pair<int, int>> &node_to_coord) {
@@ -53,26 +40,23 @@ int main() {
   }
 
   using id = int;
+  unordered_map<id, PairNode<Node_Data> *> ptr_map;
 
   int num_of_nodes = 4;
-  BinaryHeap<Node_Data> PQ({});
+  PairingHeap<Node_Data> PQ;
 
-  vector<Node_Data> node_datas; // used for finding the index in heap
-
-  node_datas.push_back(Node_Data(0, h_map[0], 0, h_map[0]));
-  PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
+  ptr_map[0] = PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
   for (int i = 1; i <= num_of_nodes; i++) {
-    node_datas.push_back(Node_Data(i, numeric_limits<float>::infinity(),
-                                   numeric_limits<float>::infinity(),
-                                   h_map[i]));
-    PQ.insert(node_datas[i]);
+    ptr_map[i] =
+        PQ.insert(Node_Data(i, numeric_limits<float>::infinity(),
+                            numeric_limits<float>::infinity(), h_map[i]));
   }
 
   unordered_map<id, id> came_from;
   came_from[0] = -1;
 
-  while (!PQ.empty()) {
-    Node_Data current = PQ.get_min();
+  while (!PQ.isEmpty()) {
+    Node_Data current(PQ.get_min());
     if (current.id == dest) {
       cout << "Done\n";
       cout << current.g_val << '\n';
@@ -82,17 +66,19 @@ int main() {
     PQ.extract_min();
     id src = current.id;
     for (auto &kv : G.adjList[src]) {
-      auto &k = kv.first; // k is node id
+      auto &k = kv.first;
       auto &v = kv.second;
-      // stuck here
+
       float tentative_gscore = current.g_val + v.weight;
-      if (tentative_gscore < node_datas[k].g_val) {
+
+      if (tentative_gscore < ptr_map[k]->element.g_val) {
         came_from[k] = src;
-        Node_Data replacement = node_datas[k];
+        Node_Data replacement =
+            ptr_map[k]
+                ->element; // copy constructor is defined so we can just do this
         replacement.g_val = tentative_gscore;
         replacement.f_val = replacement.g_val + replacement.h_val;
-        PQ.decrease_key(PQ.obj_to_index[node_datas[k]], replacement);
-        node_datas[k] = replacement;
+        PQ.decrease_key(ptr_map[k], replacement);
       }
     }
   }

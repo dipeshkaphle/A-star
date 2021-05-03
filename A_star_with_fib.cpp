@@ -1,50 +1,10 @@
 #include "FibonacciHeap.cpp"
 #include "Graph.cpp"
-
-struct Data {
-  int weight;
-  Data() : weight(0) {}
-  Data(int wt) : weight(wt) {}
-};
-
-struct Node_Data {
-  int id;
-  float f_val;
-  float g_val;
-  float h_val;
-  bool operator<(const Node_Data &other) const { return f_val < other.f_val; }
-  bool operator>(const Node_Data &other) const { return f_val > other.f_val; }
-  bool operator==(const Node_Data &other) const {
-    return f_val == other.f_val && id == other.id;
-  }
-  bool operator>=(const Node_Data &other) const {
-    return ((*this) > other) || (other == (*this));
-  }
-  bool operator<=(const Node_Data &other) const {
-    return ((*this) < other) || (other == (*this));
-  }
-  Node_Data(int node_num, float f_val, float g_val, float h_val)
-      : id(node_num), f_val(f_val), g_val(g_val), h_val(h_val) {}
-
-  Node_Data(const Node_Data &other) = default;
-  Node_Data &operator=(const Node_Data &other) {
-    id = other.id;
-    f_val = other.f_val;
-    g_val = other.g_val;
-    h_val = other.h_val;
-    return *this;
-  }
-};
+#include "utility_classes.cpp"
 
 const Node_Data min_possible(-1, -numeric_limits<float>::infinity(),
                              -numeric_limits<float>::infinity(),
                              -numeric_limits<float>::infinity());
-
-// template <> struct hash<Data> {
-//   std::size_t operator()(const Data &key) const {
-//     return std::hash<int>()(key.weight);
-//   }
-// };
 
 float get_h_val(int src, int dest,
                 unordered_map<int, pair<int, int>> &node_to_coord) {
