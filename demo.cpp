@@ -212,31 +212,52 @@ void print_graph(Graph<Data> &G) {
 
 int main() {
 
-  ofstream fib("Fibo.txt");
-  ofstream bin("Bin.txt");
-  ofstream pairing("Pair.txt");
+  int size{10};
+  Graph<Data> G;
+  G.insertEdges(0, {1, 2, 3}, {10, 11, 20});
+  G.insertEdges(1, {8, 4}, {15, 16});
+  G.insertEdges(2, {5}, {Data(20)});
+  G.insertEdges(3, {2, 4}, {12, 18});
+  G.insertEdges(4, {8, 5}, {8, 18});
+  G.insertEdges(5, {8, 6}, {25, 8});
+  G.insertEdges(6, {7, 8}, {6, 25});
+  G.insertEdges(7, {9}, {Data(9)});
+  G.insertEdges(8, {9}, {Data(30)});
+  G.insertEdges(9, {5, 6}, {29, 7});
+  // G.add
+  cout << "Graph G\n";
+  print_graph(G);
+  cout << "\n";
+  int dest = size - 1;
+  fill_node_to_coord(size);
+  cout << "Node and their co-ordinates:\n";
+  for_each(node_to_coord.begin(), node_to_coord.end(), [](const auto &x) {
+    cout << x.first << ":"
+         << "(" << x.second.first << "," << x.second.second << ")\n";
+  });
+  cout << "\n";
+  fill_h_map(dest);
+  cout << "Node and their distances from destination(Node " << dest << "):\n";
+  for_each(h_map.begin(), h_map.end(), [](const auto &x) {
+    cout << x.first << ":" << x.second << " units\n";
+  });
+  cout << "\n";
 
-  for (int i = 500; i <= 7000; i += 500) {
-    int size = i;
-    Graph<Data> G = generate_random_graph(size);
-    // print_graph(G);
-    int dest = size - 1;
-    fill_node_to_coord(size);
-    fill_h_map(dest);
-    cout << "Binary Heap A*\n";
-    auto time_elapsed1 =
-        timeMyFunction(BinHeap::A_star, std::ref(G), dest, size);
-    cout << "Fibonacci Heap A*\n";
-    auto time_elapsed2 = timeMyFunction(Fib::A_star, std::ref(G), dest, size);
-    cout << "Pairing Heap A*\n";
-    auto time_elapsed3 =
-        timeMyFunction(PairHeap::A_star, std::ref(G), dest, size);
-    bin << fixed << setprecision(30) << size << ":" << time_elapsed1 << '\n';
-    fib << fixed << setprecision(30) << size << ":" << time_elapsed2 << '\n';
-    pairing << fixed << setprecision(30) << size << ":" << time_elapsed3
-            << '\n';
-    cout << '\n';
-  }
+  // src for all A_star functions will be 0
+  cout << "Binary Heap A*\n";
+  auto time_elapsed1 = timeMyFunction(BinHeap::A_star, std::ref(G), dest, size);
+  cout << '\n';
+  cout << "Fibonacci Heap A*\n";
+  auto time_elapsed2 = timeMyFunction(Fib::A_star, std::ref(G), dest, size);
+  cout << '\n';
+  cout << "Pairing Heap A*\n";
+  auto time_elapsed3 =
+      timeMyFunction(PairHeap::A_star, std::ref(G), dest, size);
+  cout << '\n';
+  // bin << fixed << setprecision(30) << size << ":" << time_elapsed1 << '\n';
+  // fib << fixed << setprecision(30) << size << ":" << time_elapsed2 << '\n';
+  // pairing << fixed << setprecision(30) << size << ":" << time_elapsed3 <<
+  // '\n'; cout << '\n';
 
   return 0;
 }
