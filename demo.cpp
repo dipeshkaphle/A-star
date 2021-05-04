@@ -43,7 +43,7 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
   for (int i = 0; i < num_of_nodes; i++)
     came_from[i] = -1;
 
-  while (!PQ.isEmpty()) {
+  while (!PQ.empty()) {
     Node_Data current(PQ.get_min());
     if (current.id == dest) {
       cout << "For V=" << num_of_nodes << "\n";
