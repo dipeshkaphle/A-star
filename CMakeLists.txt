@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION "3.19.2")
+cmake_minimum_required(VERSION "3.16.3")
 
 project("A_star")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
