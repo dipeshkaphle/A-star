@@ -1,3 +1,7 @@
+#ifndef UTILITIES_CPP
+#define UTILITIES_CPP
+
+#include "BinaryHeap.cpp"
 #include <chrono>
 #include <cmath>
 #include <iostream>
@@ -87,3 +91,5 @@ template <> struct std::hash<Node_Data> {
     return std::hash<int>()(key.id);
   }
 };
+
+#endif

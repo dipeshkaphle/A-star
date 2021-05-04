@@ -1,3 +1,6 @@
+#ifndef FIBONACCI_HEAP_CPP
+#define FIBONACCI_HEAP_CPP
+
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -360,3 +363,5 @@ private:
     }
   }
 };
+
+#endif

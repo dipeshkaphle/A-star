@@ -1,3 +1,5 @@
+#ifndef GRAPH_CPP
+#define GRAPH_CPP
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -71,3 +73,5 @@ public:
   //   return std::numeric_limits<int>::max();
   // }
 };
+
+#endif

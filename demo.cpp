@@ -31,17 +31,15 @@ namespace PairHeap {
 void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
 
   using id = int;
-  unordered_map<id, PairNode<Node_Data> *> ptr_map;
+  vector<PairNode<Node_Data> *> ptr_map(num_of_nodes);
   PairingHeap<Node_Data> PQ;
   ptr_map[0] = PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
-  for (int i = 1; i <= num_of_nodes; i++) {
+  for (int i = 1; i < num_of_nodes; i++) {
     ptr_map[i] =
         PQ.insert(Node_Data(i, numeric_limits<float>::infinity(),
                             numeric_limits<float>::infinity(), h_map[i]));
   }
-  unordered_map<id, id> came_from;
-  for (int i = 0; i < num_of_nodes; i++)
-    came_from[i] = -1;
+  vector<id> came_from(num_of_nodes, -1);
 
   while (!PQ.empty()) {
     Node_Data current(PQ.get_min());
@@ -80,19 +78,17 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
   using id = int;
   BinaryHeap<Node_Data> PQ({});
   vector<Node_Data> node_datas; // used for finding the index in heap
+  node_datas.reserve(num_of_nodes);
 
-  node_datas.push_back(Node_Data(0, h_map[0], 0, h_map[0]));
+  node_datas.emplace_back(0, h_map[0], 0, h_map[0]);
   PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
   for (int i = 1; i < num_of_nodes; i++) {
-    node_datas.push_back(Node_Data(i, numeric_limits<float>::infinity(),
-                                   numeric_limits<float>::infinity(),
-                                   h_map[i]));
+    node_datas.emplace_back(i, numeric_limits<float>::infinity(),
+                            numeric_limits<float>::infinity(), h_map[i]);
     PQ.insert(node_datas[i]);
   }
-  unordered_map<id, id> came_from;
+  vector<id> came_from(num_of_nodes, -1);
   vector<bool> extracted_already(num_of_nodes, false);
-  for (int i = 0; i < num_of_nodes; i++)
-    came_from[i] = -1;
 
   while (!PQ.empty()) {
     Node_Data current = PQ.get_min();
@@ -130,7 +126,7 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
 namespace Fib {
 void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
   using id = int;
-  unordered_map<id, FibHeap<Node_Data>::node *> ptr_map;
+  vector<FibHeap<Node_Data>::node *> ptr_map(num_of_nodes);
 
   FibHeap<Node_Data> PQ(min_possible);
   ptr_map[0] = PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
@@ -140,9 +136,7 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
                             numeric_limits<float>::infinity(), h_map[i]));
   }
 
-  unordered_map<id, id> came_from;
-  for (int i = 0; i < num_of_nodes; i++)
-    came_from[i] = -1;
+  vector<id> came_from(num_of_nodes, -1);
 
   while (!PQ.empty()) {
     // PQ.print();

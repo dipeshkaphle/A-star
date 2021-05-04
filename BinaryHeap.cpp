@@ -1,3 +1,6 @@
+#ifndef BINARY_HEAP
+#define BINARY_HEAP
+
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -97,3 +100,5 @@ private:
     }
   }
 };
+
+#endif

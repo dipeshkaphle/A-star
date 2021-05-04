@@ -1,3 +1,5 @@
+#ifndef PAIRING_HEAP_CPP
+#define PAIRING_HEAP_CPP
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -192,3 +194,5 @@ template <typename T> PairNode<T> *PairingHeap<T>::clone(PairNode<T> *t) {
     p->nextSibling->parent = p;
   return p;
 }
+
+#endif

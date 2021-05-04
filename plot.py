@@ -1,11 +1,13 @@
 from matplotlib.markers import MarkerStyle
 import matplotlib.pyplot as plt
 import math
+import os
 
 
+binheap = open(os.path.join("Output", "Bin.txt")).readlines()
 binheap = open("./Bin.txt").readlines()
-fibheap = open("./Fibo.txt").readlines()
-pairingheap = open("./Pair.txt").readlines()
+fibheap = open(os.path.join("Output", "Fibo.txt")).readlines()
+pairingheap = open(os.path.join("Output", "Pair.txt")).readlines()
 
 n_values = [int(line.split(':')[0]) for line in binheap]
 time_bin = [float(line.split(':')[1]) for line in binheap]

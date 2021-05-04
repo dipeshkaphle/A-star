@@ -4,8 +4,11 @@
 #include "Pair.cpp"
 #include "utility_classes.cpp"
 
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
+
+namespace fs = std::filesystem;
 
 const Node_Data min_possible(-1, -numeric_limits<float>::infinity(),
                              -numeric_limits<float>::infinity(),
@@ -205,10 +208,10 @@ void print_graph(Graph<Data> &G) {
 }
 
 int main() {
-
-  ofstream fib("Fibo.txt");
-  ofstream bin("Bin.txt");
-  ofstream pairing("Pair.txt");
+  fs::create_directory("Output");
+  ofstream fib(fs::path("Output///Fibo.txt").make_preferred().c_str());
+  ofstream bin(fs::path("Output///Bin.txt").make_preferred().c_str());
+  ofstream pairing(fs::path("Output///Pair.txt").make_preferred().c_str());
 
   for (int i = 500; i <= 7000; i += 500) {
     int size = i;
