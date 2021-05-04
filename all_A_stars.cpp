@@ -31,11 +31,12 @@ void fill_h_map(int dest) {
 }
 
 namespace PairHeap {
-void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
+void A_star(Graph<Data> &G, PairingHeap<Node_Data> &PQ, int dest,
+            int num_of_nodes) {
 
   using id = int;
   vector<PairNode<Node_Data> *> ptr_map(num_of_nodes);
-  PairingHeap<Node_Data> PQ;
+  // PairingHeap<Node_Data> PQ;
   ptr_map[0] = PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
   for (int i = 1; i < num_of_nodes; i++) {
     ptr_map[i] =
@@ -77,9 +78,10 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
 } // namespace PairHeap
 
 namespace BinHeap {
-void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
+void A_star(Graph<Data> &G, BinaryHeap<Node_Data> &PQ, int dest,
+            int num_of_nodes) {
   using id = int;
-  BinaryHeap<Node_Data> PQ({});
+  // BinaryHeap<Node_Data> PQ({});
   vector<Node_Data> node_datas; // used for finding the index in heap
   node_datas.reserve(num_of_nodes);
 
@@ -127,11 +129,12 @@ void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
 } // namespace BinHeap
 
 namespace Fib {
-void A_star(Graph<Data> &G, int dest, int num_of_nodes) {
+void A_star(Graph<Data> &G, FibHeap<Node_Data> &PQ, int dest,
+            int num_of_nodes) {
   using id = int;
   vector<FibHeap<Node_Data>::node *> ptr_map(num_of_nodes);
 
-  FibHeap<Node_Data> PQ(min_possible);
+  // FibHeap<Node_Data> PQ(min_possible);
   ptr_map[0] = PQ.insert(Node_Data(0, h_map[0], 0, h_map[0]));
   for (int i = 1; i < num_of_nodes; i++) {
     ptr_map[i] =
@@ -213,21 +216,26 @@ int main() {
   ofstream bin(fs::path("Output///Bin.txt").make_preferred().c_str());
   ofstream pairing(fs::path("Output///Pair.txt").make_preferred().c_str());
 
-  for (int i = 500; i <= 7000; i += 500) {
+  for (int i = 100; i <= 3000; i += 100) {
     int size = i;
     Graph<Data> G = generate_random_graph(size);
     // print_graph(G);
     int dest = size - 1;
     fill_node_to_coord(size);
     fill_h_map(dest);
+    FibHeap<Node_Data> PQ_fib(min_possible);
+    BinaryHeap<Node_Data> PQ_bin({});
+    PairingHeap<Node_Data> PQ_pair;
+
     cout << "Binary Heap A*\n";
-    auto time_elapsed1 =
-        timeMyFunction(BinHeap::A_star, std::ref(G), dest, size);
+    auto time_elapsed1 = timeMyFunction(BinHeap::A_star, std::ref(G),
+                                        std::ref(PQ_bin), dest, size);
     cout << "Fibonacci Heap A*\n";
-    auto time_elapsed2 = timeMyFunction(Fib::A_star, std::ref(G), dest, size);
+    auto time_elapsed2 =
+        timeMyFunction(Fib::A_star, std::ref(G), std::ref(PQ_fib), dest, size);
     cout << "Pairing Heap A*\n";
-    auto time_elapsed3 =
-        timeMyFunction(PairHeap::A_star, std::ref(G), dest, size);
+    auto time_elapsed3 = timeMyFunction(PairHeap::A_star, std::ref(G),
+                                        std::ref(PQ_pair), dest, size);
     bin << fixed << setprecision(30) << size << ":" << time_elapsed1 << '\n';
     fib << fixed << setprecision(30) << size << ":" << time_elapsed2 << '\n';
     pairing << fixed << setprecision(30) << size << ":" << time_elapsed3

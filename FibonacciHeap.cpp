@@ -32,7 +32,7 @@ public:
     node *parent = nullptr;
     size_t degree = 0;
     bool mark = false;
-    node(T val) : data(val) {
+    node(const T &val) : data(val) {
       prev = this;
       next = this;
     }
@@ -75,9 +75,9 @@ public:
     }
   }; // node class ends
 
-  bool empty() noexcept { return min == nullptr; }
+  inline bool empty() const noexcept { return min == nullptr; }
 
-  FibHeap<T>::node *insert(T data) {
+  FibHeap<T>::node *insert(const T &data) {
     node *x = new node(data);
     if (min == nullptr) {
       min = x;
@@ -154,13 +154,23 @@ public:
   T extract_min() {
     T ret_val = this->get_min();
     node *z = min;
-    std::vector<node *> children;
-    if (min->child)
-      children = min->child->get_all_nodes();
-    for (node *child : children) {
+    // vector<node *> children;
+    // if (min->child)
+    // children = min->child->get_all_nodes();
+    node *min_child = min->child;
+    if (min_child != nullptr) {
+      node *child = min_child;
+      node *min_child_next = min_child->next;
       child->parent = nullptr;
       make_node_point_to_itself(child);
       min->merge(child);
+      child = min_child_next;
+      for (; child != min_child; child = min_child_next) {
+        min_child_next = child->next;
+        child->parent = nullptr;
+        make_node_point_to_itself(child);
+        min->merge(child);
+      }
     }
     remove_connection_from_prev_and_next(min);
     if (z == z->next) {
@@ -175,7 +185,7 @@ public:
     return ret_val;
   }
 
-  T get_min() {
+  inline T get_min() {
     if (this->min == nullptr) {
       throw std::out_of_range("Empty heap");
     }
@@ -225,7 +235,7 @@ private:
   T min_possible_key_of_type_T;
   size_t n = 0;
 
-  void fib_heap_link(node *y, node *x) {
+  inline void fib_heap_link(node *y, node *x) {
     y->prev->next = y->next;
     y->next->prev = y->prev;
     y->next = y;
@@ -240,14 +250,14 @@ private:
     y->mark = false;
   }
 
-  void remove_connection_from_prev_and_next(node *x) {
+  inline void remove_connection_from_prev_and_next(node *x) {
     if (x == nullptr)
       return;
     x->prev->next = x->next;
     x->next->prev = x->prev;
   }
 
-  void make_node_point_to_itself(node *x) {
+  inline void make_node_point_to_itself(node *x) {
     x->next = x;
     x->prev = x;
   }
@@ -328,7 +338,7 @@ private:
   // this'll be used to reinstate the heap property
   void consolidate() {
     std::vector<node *> A(ceil(log2(this->n) + 1), nullptr);
-    std::vector<node *> rootlist_nodes = min->get_all_nodes();
+    std::vector<node *> rootlist_nodes = std::move(min->get_all_nodes());
     node *cur_node;
     node *same_deg_node;
     size_t deg;
@@ -346,6 +356,7 @@ private:
       }
       A[deg] = cur_node;
     }
+
     min = nullptr;
     for (size_t i = 0; i < A.size(); i++) {
       if (A[i] != nullptr) {
