@@ -5,7 +5,6 @@ import os
 
 
 binheap = open(os.path.join("Output", "Bin.txt")).readlines()
-binheap = open("./Bin.txt").readlines()
 fibheap = open(os.path.join("Output", "Fibo.txt")).readlines()
 pairingheap = open(os.path.join("Output", "Pair.txt")).readlines()
 
