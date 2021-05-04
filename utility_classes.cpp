@@ -53,7 +53,7 @@ float get_h_val(int src, int dest,
   return sqrt((c - a) * (c - a) + (d - b) * (d - b));
 }
 
-void reconstruct_path(std::unordered_map<int, int> &came_from, int current) {
+void reconstruct_path(std::vector<int> &came_from, int current) {
   std::vector<int> path = {current};
   while (came_from[current] != -1) {
     current = came_from[current];
