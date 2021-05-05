@@ -1,0 +1,114 @@
+#include "BinaryHeap.cpp"
+#include "FibonacciHeap.cpp"
+#include "Pair.cpp"
+#include "utility_classes.cpp"
+
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+
+using namespace std::placeholders;
+
+namespace fs = std::filesystem;
+
+int main() {
+
+  int n = 1000000;
+  fs::create_directory("Output");
+  std::ofstream inserts(
+      fs::path("Output///inserts.txt").make_preferred().c_str());
+  std::ofstream get_min(
+      fs::path("Output///get_min.txt").make_preferred().c_str());
+  std::ofstream extract_mins(
+      fs::path("Output///extract_mins.txt").make_preferred().c_str());
+  std::ofstream decrease_key(
+      fs::path("Output///decrease_key.txt").make_preferred().c_str());
+
+  std::vector<int> all_entries(n);
+  std::iota(all_entries.begin(), all_entries.end(), 1);
+  std::random_shuffle(all_entries.begin(), all_entries.end());
+  FibHeap<int> PQ_fib(INT32_MIN);
+  BinaryHeap<int> PQ_bin({});
+  PairingHeap<int> PQ_pair;
+  unordered_map<int, FibHeap<int>::node *> fib_map;
+  unordered_map<int, PairNode<int> *> pair_map;
+  int decrease_to = -1;
+  int to_insert = n + 1;
+  for (int j = 0; j < n; j++) {
+    int i = j + 1;
+    if (i % 10000 == 0) {
+      /// get min timings
+      {
+        auto fib_time =
+            timeMyFunction(std::bind(&FibHeap<int>::get_min, &PQ_fib));
+        auto bin_time =
+            timeMyFunction(std::bind(&BinaryHeap<int>::get_min, &PQ_bin));
+        auto pairing_time =
+            timeMyFunction(std::bind(&PairingHeap<int>::get_min, &PQ_pair));
+        get_min << std::fixed << std::setprecision(30) << i << " " << fib_time
+                << " " << bin_time << " " << pairing_time << '\n';
+      }
+
+      // extract_min timings
+      {
+        fib_map[PQ_fib.get_min()] = nullptr;
+        auto fib_time =
+            timeMyFunction(std::bind(&FibHeap<int>::extract_min, &PQ_fib));
+
+        auto bin_time =
+            timeMyFunction(std::bind(&BinaryHeap<int>::extract_min, &PQ_bin));
+
+        pair_map[PQ_pair.get_min()] = nullptr;
+        auto pairing_time =
+            timeMyFunction(std::bind(&PairingHeap<int>::extract_min, &PQ_pair));
+        extract_mins << std::fixed << std::setprecision(30) << i << " "
+                     << fib_time << " " << bin_time << " " << pairing_time
+                     << '\n';
+      }
+
+      // insert
+      {
+        auto fib_time = timeMyFunction(
+            std::bind(&FibHeap<int>::insert, &PQ_fib, _1), to_insert);
+
+        auto bin_time = timeMyFunction(
+            std::bind(&BinaryHeap<int>::insert, &PQ_bin, _1), to_insert);
+
+        auto pairing_time = timeMyFunction(
+            std::bind(&PairingHeap<int>::insert, &PQ_pair, _1), to_insert);
+        inserts << std::fixed << std::setprecision(30) << i << " " << fib_time
+                << " " << bin_time << " " << pairing_time << '\n';
+        to_insert++;
+      }
+
+      // decrease_keys
+      {
+        auto x = all_entries[j - 1];
+        auto fib_time =
+            timeMyFunction(std::bind<bool (FibHeap<int>::*)(
+                               FibHeap<int>::node *, const int &)>(
+                               &FibHeap<int>::decrease_key, &PQ_fib, _1, _2),
+                           fib_map[x], decrease_to);
+
+        auto bin_time = timeMyFunction(
+            std::bind(&BinaryHeap<int>::decrease_key, &PQ_bin, _1, _2),
+            PQ_bin.get_index(x), decrease_to);
+
+        auto pairing_time = timeMyFunction(
+            std::bind(&PairingHeap<int>::decrease_key, &PQ_pair, _1, _2),
+            pair_map[x], decrease_to);
+        decrease_to--;
+        decrease_key << std::fixed << std::setprecision(30) << i << " "
+                     << fib_time << " " << bin_time << " " << pairing_time
+                     << '\n';
+      }
+
+    } else {
+      fib_map[all_entries[j]] = PQ_fib.insert(all_entries[j]);
+      pair_map[all_entries[j]] = PQ_pair.insert(all_entries[j]);
+      PQ_bin.insert(all_entries[j]);
+    }
+  }
+}
