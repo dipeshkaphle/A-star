@@ -10,11 +10,11 @@ public:
   T element;
   PairNode<T> *leftChild;
   PairNode<T> *nextSibling;
-  PairNode<T> *parent;
+  PairNode<T> *prev;
   PairNode(const T &element) : element(element) {
     leftChild = nullptr;
     nextSibling = nullptr;
-    parent = nullptr;
+    prev = nullptr;
   }
 };
 
@@ -126,11 +126,11 @@ void PairingHeap<T>::decrease_key(PairNode<T> *p, const T &replacement) {
   p->element = replacement;
   if (p != root) {
     if (p->nextSibling != nullptr)
-      p->nextSibling->parent = p->parent;
-    if (p->parent->leftChild == p)
-      p->parent->leftChild = p->nextSibling;
+      p->nextSibling->prev = p->prev;
+    if (p->prev->leftChild == p)
+      p->prev->leftChild = p->nextSibling;
     else
-      p->parent->nextSibling = p->nextSibling;
+      p->prev->nextSibling = p->nextSibling;
     p->nextSibling = nullptr;
     compareAndLink(root, p);
   }
@@ -141,21 +141,21 @@ void PairingHeap<T>::compareAndLink(PairNode<T> *&first, PairNode<T> *second) {
   if (second == nullptr)
     return;
   if (second->element < first->element) {
-    second->parent = first->parent;
-    first->parent = second;
+    second->prev = first->prev;
+    first->prev = second;
     first->nextSibling = second->leftChild;
     if (first->nextSibling != nullptr)
-      first->nextSibling->parent = first;
+      first->nextSibling->prev = first;
     second->leftChild = first;
     first = second;
   } else {
-    second->parent = first;
+    second->prev = first;
     first->nextSibling = second->nextSibling;
     if (first->nextSibling != nullptr)
-      first->nextSibling->parent = first;
+      first->nextSibling->prev = first;
     second->nextSibling = first->leftChild;
     if (second->nextSibling != nullptr)
-      second->nextSibling->parent = second;
+      second->nextSibling->prev = second;
     first->leftChild = second;
   }
 }
@@ -174,7 +174,7 @@ PairNode<T> *PairingHeap<T>::combineSiblings(PairNode<T> *first_sibling) {
       tree_arr.resize(num_siblings * 2);
 
     tree_arr[num_siblings] = first_sibling;
-    first_sibling->parent->nextSibling = nullptr;
+    first_sibling->prev->nextSibling = nullptr;
     first_sibling = first_sibling->nextSibling;
   }
 
@@ -203,9 +203,9 @@ template <typename T> PairNode<T> *PairingHeap<T>::clone(PairNode<T> *t) {
     return nullptr;
   PairNode<T> *p = new PairNode<T>(t->element);
   if ((p->leftChild = clone(t->leftChild)) != nullptr)
-    p->leftChild->parent = p;
+    p->leftChild->prev = p;
   if ((p->nextSibling = clone(t->nextSibling)) != nullptr)
-    p->nextSibling->parent = p;
+    p->nextSibling->prev = p;
   return p;
 }
 
