@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 
 int main() {
 
-  int n = 1000000;
+  int n = 3000000;
   fs::create_directory("Output");
   std::ofstream inserts(
       fs::path("Output///inserts.txt").make_preferred().c_str());
@@ -36,9 +36,10 @@ int main() {
   unordered_map<int, PairNode<int> *> pair_map;
   int decrease_to = -1;
   int to_insert = n + 1;
+  int check_points = 10000;
   for (int j = 0; j < n; j++) {
     int i = j + 1;
-    if (i % 10000 == 0) {
+    if (i % check_points == 0) {
       /// get min timings
       {
         auto fib_time =
@@ -49,23 +50,6 @@ int main() {
             timeMyFunction(std::bind(&PairingHeap<int>::get_min, &PQ_pair));
         get_min << std::fixed << std::setprecision(30) << i << " " << fib_time
                 << " " << bin_time << " " << pairing_time << '\n';
-      }
-
-      // extract_min timings
-      {
-        fib_map[PQ_fib.get_min()] = nullptr;
-        auto fib_time =
-            timeMyFunction(std::bind(&FibHeap<int>::extract_min, &PQ_fib));
-
-        auto bin_time =
-            timeMyFunction(std::bind(&BinaryHeap<int>::extract_min, &PQ_bin));
-
-        pair_map[PQ_pair.get_min()] = nullptr;
-        auto pairing_time =
-            timeMyFunction(std::bind(&PairingHeap<int>::extract_min, &PQ_pair));
-        extract_mins << std::fixed << std::setprecision(30) << i << " "
-                     << fib_time << " " << bin_time << " " << pairing_time
-                     << '\n';
       }
 
       // insert
@@ -81,6 +65,21 @@ int main() {
         inserts << std::fixed << std::setprecision(30) << i << " " << fib_time
                 << " " << bin_time << " " << pairing_time << '\n';
         to_insert++;
+      }
+
+      // extract_min timings
+      {
+        auto fib_time =
+            timeMyFunction(std::bind(&FibHeap<int>::extract_min, &PQ_fib));
+
+        auto bin_time =
+            timeMyFunction(std::bind(&BinaryHeap<int>::extract_min, &PQ_bin));
+
+        auto pairing_time =
+            timeMyFunction(std::bind(&PairingHeap<int>::extract_min, &PQ_pair));
+        extract_mins << std::fixed << std::setprecision(30) << i << " "
+                     << fib_time << " " << bin_time << " " << pairing_time
+                     << '\n';
       }
 
       // decrease_keys
@@ -105,6 +104,7 @@ int main() {
                      << '\n';
       }
 
+      // check_points *= 2;
     } else {
       fib_map[all_entries[j]] = PQ_fib.insert(all_entries[j]);
       pair_map[all_entries[j]] = PQ_pair.insert(all_entries[j]);

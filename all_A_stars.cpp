@@ -112,7 +112,6 @@ void A_star(Graph<Data> &G, BinaryHeap<Node_Data> &PQ, int dest,
       auto &v = kv.second;
       if (extracted_already[k])
         continue;
-      // stuck here
       float tentative_gscore = current.g_val + v.weight;
       if (tentative_gscore < node_datas[k].g_val) {
         came_from[k] = src;
@@ -216,7 +215,7 @@ int main() {
   ofstream bin(fs::path("Output///Bin.txt").make_preferred().c_str());
   ofstream pairing(fs::path("Output///Pair.txt").make_preferred().c_str());
 
-  for (int i = 100; i <= 3000; i += 100) {
+  for (int i = 100; i <= 5000; i += 100) {
     int size = i;
     Graph<Data> G = generate_random_graph(size);
     // print_graph(G);

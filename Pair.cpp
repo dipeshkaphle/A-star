@@ -24,11 +24,25 @@ private:
 
   void clear(PairNode<T> *t) {
     if (t != nullptr) {
-      clear(t->leftChild);
-      clear(t->nextSibling);
-      delete t;
+      vector<PairNode<T> *> stck;
+      stck.push_back(t);
+      while (!stck.empty()) {
+        auto curr = stck.back();
+        stck.pop_back();
+        if (curr->nextSibling != nullptr)
+          stck.push_back(curr->nextSibling);
+        if (curr->leftChild != nullptr)
+          stck.push_back(curr->leftChild);
+        delete curr;
+      }
     }
+    // if (t != nullptr) {
+    //   clear(t->leftChild);
+    //   clear(t->nextSibling);
+    //   delete t;
+    // }
   }
+
   void compareAndLink(PairNode<T> *&first, PairNode<T> *second);
   PairNode<T> *combineSiblings(PairNode<T> *firstSibling);
   PairNode<T> *clone(PairNode<T> *t);
