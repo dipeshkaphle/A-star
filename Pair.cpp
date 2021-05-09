@@ -4,6 +4,13 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+/*      
+          1
+        /
+      3 ------- 4 --------- 9
+    /          /
+  7----8     6-------5----------10
+*/
 
 template <typename T> class PairNode {
 public:
@@ -187,6 +194,7 @@ PairNode<T> *PairingHeap<T>::combineSiblings(PairNode<T> *first_sibling) {
   for (; i + 1 < num_siblings; i += 2)
     compareAndLink(tree_arr[i], tree_arr[i + 1]);
 
+  // After for loop the value of i is 2 more than what is required hence we are decrementing it
   int j = i - 2;
 
   if (j == num_siblings - 3)

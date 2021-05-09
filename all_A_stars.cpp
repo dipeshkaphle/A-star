@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 const Node_Data min_possible(-1, -numeric_limits<float>::infinity(),
                              -numeric_limits<float>::infinity(),
-                             -numeric_limits<float>::infinity());
+                             -numeric_limits<float>::infinity()); // id, f_value, g_value, h_value
 
 unordered_map<int, pair<int, int>> node_to_coord;
 unordered_map<int, float> h_map;
@@ -58,6 +58,7 @@ void A_star(Graph<Data> &G, PairingHeap<Node_Data> &PQ, int dest,
     ptr_map[current.id] = nullptr;
     id src = current.id;
     for (auto &kv : G.adjList[src]) {
+      // The edge is src to k and the weight is v
       auto &k = kv.first;
       auto &v = kv.second;
       if (ptr_map[k] == nullptr)
