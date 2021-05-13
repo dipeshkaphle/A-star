@@ -68,6 +68,11 @@ public:
     throw std::runtime_error("Invalid decrease key operation");
   }
 
+  void merge(const BinaryHeap<T, Compare> &other) {
+    this->heap.insert(this->heap.end(), other.heap.begin(), other.heap.end());
+    std::make_heap(this->heap.begin(), this->heap.end(), this->cmp);
+  }
+
 private:
   void shift_up(size_t index) {
     if (index == 0)

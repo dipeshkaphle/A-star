@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-/*      
+/*
           1
         /
       3 ------- 4 --------- 9
@@ -71,6 +71,11 @@ public:
   ~PairingHeap() { this->clear(); }
 
   bool empty() const { return this->root == nullptr; }
+
+  void merge(PairingHeap<T> &other) {
+    compareAndLink(this->root, other.root);
+    other.root = nullptr;
+  }
 
   const T &get_min() {
     if (this->root != nullptr)
@@ -194,7 +199,8 @@ PairNode<T> *PairingHeap<T>::combineSiblings(PairNode<T> *first_sibling) {
   for (; i + 1 < num_siblings; i += 2)
     compareAndLink(tree_arr[i], tree_arr[i + 1]);
 
-  // After for loop the value of i is 2 more than what is required hence we are decrementing it
+  // After for loop the value of i is 2 more than what is required hence we are
+  // decrementing it
   int j = i - 2;
 
   if (j == num_siblings - 3)

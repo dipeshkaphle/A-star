@@ -12,3 +12,4 @@ add_executable(all_A_stars all_A_stars.cpp)
 add_executable(demo demo.cpp)
 
 add_executable(profile_operations profile_operations.cpp)
+add_executable(profile_joins profile_joins.cpp)
