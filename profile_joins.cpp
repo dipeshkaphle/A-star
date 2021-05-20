@@ -13,6 +13,7 @@ using namespace std::placeholders;
 
 int main() {
 
+  std::cout << "Started measuring merge operations.\n";
   std::ofstream joins("joins.txt");
   //
 
@@ -60,4 +61,7 @@ int main() {
     assert(is_sorted(res_f.begin(), res_f.end()));
     assert(is_sorted(res_p.begin(), res_p.end()));
   }
+
+  std::cout
+      << "Done. Please run python plot_joins.py to see the comparision plot";
 }

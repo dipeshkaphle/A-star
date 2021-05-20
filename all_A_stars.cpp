@@ -239,5 +239,7 @@ int main() {
     cout << '\n';
   }
 
+  cout << "Run python plot.py to see the comparision in running times\n";
+
   return 0;
 }

@@ -12,6 +12,7 @@ using namespace std::placeholders;
 
 int main() {
 
+  std::cout << "Started measuring different operations.\n";
   int n = 3000000;
   std::ofstream inserts("inserts.txt");
   std::ofstream get_min("get_min.txt");
@@ -103,4 +104,16 @@ int main() {
       PQ_bin.insert(all_entries[j]);
     }
   }
+
+  std::cout << "Run python plot_inserts.py to see the comparisions for insert "
+               "operation\n";
+  std::cout
+      << "Run python plot_get_mins.py to see the comparisions for get_min "
+         "operation\n";
+  std::cout << "Run python plot_decrease_key.py to see the comparisions for "
+               "decrease_key "
+               "operation\n";
+  std::cout << "Run python plot_extract_mins.py to see the comparisions for "
+               "extract_min "
+               "operation\n";
 }
