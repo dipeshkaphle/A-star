@@ -16,7 +16,7 @@ namespace fs = std::filesystem;
 int main() {
 
   fs::create_directory("Output");
-  std::ofstream joins(fs::path("Output///joins.txt").make_preferred().c_str());
+  std::ofstream joins("joins.txt");
   //
 
   for (int i = 200; i <= 5000; i += 200) {

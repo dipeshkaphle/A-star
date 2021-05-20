@@ -4,15 +4,12 @@
 #include "Pair.cpp"
 #include "utility_classes.cpp"
 
-#include <filesystem>
 #include <fstream>
 #include <iomanip>
 
-namespace fs = std::filesystem;
-
-const Node_Data min_possible(-1, -numeric_limits<float>::infinity(),
-                             -numeric_limits<float>::infinity(),
-                             -numeric_limits<float>::infinity()); // id, f_value, g_value, h_value
+const Node_Data min_possible(
+    -1, -numeric_limits<float>::infinity(), -numeric_limits<float>::infinity(),
+    -numeric_limits<float>::infinity()); // id, f_value, g_value, h_value
 
 unordered_map<int, pair<int, int>> node_to_coord;
 unordered_map<int, float> h_map;
@@ -211,10 +208,9 @@ void print_graph(Graph<Data> &G) {
 }
 
 int main() {
-  fs::create_directory("Output");
-  ofstream fib(fs::path("Output///Fibo.txt").make_preferred().c_str());
-  ofstream bin(fs::path("Output///Bin.txt").make_preferred().c_str());
-  ofstream pairing(fs::path("Output///Pair.txt").make_preferred().c_str());
+  ofstream fib("Fibo.txt");
+  ofstream bin("Bin.txt");
+  ofstream pairing("Pair.txt");
 
   for (int i = 100; i <= 5000; i += 100) {
     int size = i;

@@ -4,9 +4,9 @@ import math
 import os
 
 
-binheap = open(os.path.join("Output", "Bin.txt")).readlines()
-fibheap = open(os.path.join("Output", "Fibo.txt")).readlines()
-pairingheap = open(os.path.join("Output", "Pair.txt")).readlines()
+binheap = open(os.path.join("Bin.txt")).readlines()
+fibheap = open(os.path.join("Fibo.txt")).readlines()
+pairingheap = open(os.path.join("Pair.txt")).readlines()
 
 n_values = [int(line.split(':')[0]) for line in binheap]
 time_bin = [float(line.split(':')[1]) for line in binheap]

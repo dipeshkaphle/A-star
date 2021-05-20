@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import os
 
-fp = open(os.path.join("Output", "decrease_key.txt")).readlines()
+fp = open(os.path.join("decrease_key.txt")).readlines()
 sizes = [int(line.split()[0]) for line in fp]
 fib = [float(line.split()[1]) for line in fp]
 _bin = [float(line.split()[2]) for line in fp]

@@ -4,27 +4,19 @@
 #include "utility_classes.cpp"
 
 #include <algorithm>
-#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 
 using namespace std::placeholders;
 
-namespace fs = std::filesystem;
-
 int main() {
 
   int n = 3000000;
-  fs::create_directory("Output");
-  std::ofstream inserts(
-      fs::path("Output///inserts.txt").make_preferred().c_str());
-  std::ofstream get_min(
-      fs::path("Output///get_min.txt").make_preferred().c_str());
-  std::ofstream extract_mins(
-      fs::path("Output///extract_mins.txt").make_preferred().c_str());
-  std::ofstream decrease_key(
-      fs::path("Output///decrease_key.txt").make_preferred().c_str());
+  std::ofstream inserts("inserts.txt");
+  std::ofstream get_min("get_min.txt");
+  std::ofstream extract_mins("extract_mins.txt");
+  std::ofstream decrease_key("decrease_key.txt");
 
   std::vector<int> all_entries(n);
   std::iota(all_entries.begin(), all_entries.end(), 1);
