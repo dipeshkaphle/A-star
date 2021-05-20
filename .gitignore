@@ -7,5 +7,4 @@ Makefile
 demo
 all_A_stars
 CMakeFiles
-*.txt
 *.out
