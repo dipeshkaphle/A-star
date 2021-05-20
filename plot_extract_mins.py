@@ -17,4 +17,6 @@ plt.plot(sizes, pair)
 plt.title("extract_min operation")
 
 plt.legend(["Fibonacci Heap", "Binary Heap", "Pairing Heap"])
+plt.xlabel("Size of input")
+plt.ylabel("Time")
 plt.show()

@@ -26,7 +26,10 @@ public:
   }
   BinaryHeap(const std::vector<T> &vect) {
     auto vec = vect;
-    BinaryHeap(std::move(vec));
+    BinaryHeap hp(std::move(vec));
+    this->heap = std::move(hp.heap);
+    this->obj_to_index = std::move(hp.obj_to_index);
+    this->cmp = hp.cmp;
   }
 
   bool empty() const { return this->heap.empty(); }

@@ -14,7 +14,9 @@ plt.plot(sizes, fib)
 plt.plot(sizes, _bin)
 plt.plot(sizes, pair)
 
-plt.title("Join operation")
+plt.title("Merge operation")
 
 plt.legend(["Fibonacci Heap", "Binary Heap", "Pairing Heap"])
+plt.xlabel("Size of input")
+plt.ylabel("Time")
 plt.show()
