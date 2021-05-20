@@ -5,17 +5,14 @@
 
 #include <algorithm>
 #include <cassert>
-#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 
 using namespace std::placeholders;
-namespace fs = std::filesystem;
 
 int main() {
 
-  fs::create_directory("Output");
   std::ofstream joins("joins.txt");
   //
 
